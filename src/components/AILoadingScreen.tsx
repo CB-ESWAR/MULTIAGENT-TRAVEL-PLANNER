@@ -119,9 +119,9 @@ export function AILoadingScreen({ isVisible }: AILoadingScreenProps) {
                   className="absolute opacity-[0.15] select-none"
                   style={{ left: `${p.left}%`, top: `${p.top}%`, fontSize: p.size }}
                   animate={{
-                    x: [0, p.driftX, -p.driftX * 0.6, 0],
-                    y: [0, -p.driftY, p.driftY * 0.7, 0],
-                    rotate: [0, p.rotate, -p.rotate, 0],
+                    x: [0, p.driftX1, p.driftX2, p.driftX3, 0],
+                    y: [0, p.driftY1, p.driftY2, p.driftY3, 0],
+                    rotate: [0, p.rotate1, -p.rotate2, p.rotate1 * 0.5, 0],
                   }}
                   transition={{
                     duration: p.duration,
