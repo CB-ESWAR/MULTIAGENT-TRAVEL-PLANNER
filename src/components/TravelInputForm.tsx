@@ -219,7 +219,7 @@ export function TravelInputForm({ onSubmit, isLoading }: TravelInputFormProps) {
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              {[1, 2, 3, 4, 5, 6].map((n) => (
+              {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((n) => (
                 <SelectItem key={n} value={n.toString()}>
                   {n} {n === 1 ? 'Person' : 'People'}
                 </SelectItem>
