@@ -2,6 +2,7 @@ import { useAIAgentSystem } from '@/hooks/useAIAgentSystem';
 import { TravelInputForm } from '@/components/TravelInputForm';
 import { AgentVisualization } from '@/components/AgentVisualization';
 import { TravelPlanDisplay } from '@/components/TravelPlanDisplay';
+import { AILoadingScreen } from '@/components/AILoadingScreen';
 import { Compass, Sparkles, Bot, Zap, Brain } from 'lucide-react';
 import heroAgents from '@/assets/hero-agents.jpg';
 import { Agent, AgentType } from '@/types/agent';
@@ -29,6 +30,8 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      {/* AI Loading Screen */}
+      <AILoadingScreen isVisible={isProcessing} />
       {/* Header */}
       <header className="sticky top-0 z-50 glass border-b">
         <div className="container mx-auto px-4 py-4">
