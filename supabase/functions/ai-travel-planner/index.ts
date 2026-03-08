@@ -158,60 +158,80 @@ function parseJSON(content: string): any {
   // Try direct parse first
   try { return JSON.parse(cleaned); } catch (_) { /* continue */ }
 
-  // Extract JSON object
+  // Extract JSON object between first { and last }
   const objStart = cleaned.indexOf('{');
   const objEnd = cleaned.lastIndexOf('}');
   if (objStart !== -1 && objEnd > objStart) {
-    const slice = cleaned.substring(objStart, objEnd + 1);
+    let slice = cleaned.substring(objStart, objEnd + 1);
     try { return JSON.parse(slice); } catch (_) { /* continue */ }
 
     // Fix trailing commas
-    const fixed = slice
-      .replace(/,\s*}/g, '}')
-      .replace(/,\s*]/g, ']');
-    try { return JSON.parse(fixed); } catch (_) { /* continue */ }
+    slice = slice.replace(/,\s*}/g, '}').replace(/,\s*]/g, ']');
+    try { return JSON.parse(slice); } catch (_) { /* continue */ }
   }
 
-  // Truncation recovery: find the last complete object in a truncated response
+  // Truncation recovery: response was cut off, missing closing braces
   if (objStart !== -1) {
     let candidate = cleaned.substring(objStart);
     
-    // Try progressively closing unclosed brackets
-    const openBraces = (candidate.match(/{/g) || []).length;
-    const closeBraces = (candidate.match(/}/g) || []).length;
-    const openBrackets = (candidate.match(/\[/g) || []).length;
-    const closeBrackets = (candidate.match(/]/g) || []).length;
-
-    // Trim to last complete property value
-    const lastCompleteComma = candidate.lastIndexOf(',');
-    const lastCompleteBrace = candidate.lastIndexOf('}');
-    const cutPoint = Math.max(lastCompleteComma, lastCompleteBrace);
+    // Find the last properly closed value (ends with a quote, number, bool, ], or })
+    // by looking for the last line that has a complete JSON value
+    const lastGoodEnding = candidate.search(/[\"\d\]\}](,)?\s*$/m);
     
-    if (cutPoint > 0) {
-      candidate = candidate.substring(0, cutPoint + 1);
-      // Remove trailing comma if present
-      candidate = candidate.replace(/,\s*$/, '');
+    // Strategy: trim trailing incomplete key-value pairs
+    // Find last occurrence of a complete value followed by potential comma
+    const patterns = [
+      /,\s*"[^"]*"\s*:\s*"[^"]*$/, // incomplete string value
+      /,\s*"[^"]*"\s*:\s*$/, // key with no value  
+      /,\s*"[^"]*"\s*:\s*\[?\s*$/, // key with opening bracket only
+      /,\s*"[^"]*$/, // incomplete key
+    ];
+    
+    for (const pattern of patterns) {
+      candidate = candidate.replace(pattern, '');
     }
-
-    // Close unclosed brackets/braces
-    const remainingOpenBrackets = (candidate.match(/\[/g) || []).length - (candidate.match(/]/g) || []).length;
-    const remainingOpenBraces = (candidate.match(/{/g) || []).length - (candidate.match(/}/g) || []).length;
     
-    for (let i = 0; i < remainingOpenBrackets; i++) candidate += ']';
-    for (let i = 0; i < remainingOpenBraces; i++) candidate += '}';
+    // Remove any trailing comma
+    candidate = candidate.replace(/,\s*$/, '');
+    
+    // Count unclosed brackets and braces, then close them
+    const openBrackets = (candidate.match(/\[/g) || []).length - (candidate.match(/\]/g) || []).length;
+    const openBraces = (candidate.match(/\{/g) || []).length - (candidate.match(/\}/g) || []).length;
+    
+    for (let i = 0; i < openBrackets; i++) candidate += ']';
+    for (let i = 0; i < openBraces; i++) candidate += '}';
 
-    // Fix trailing commas before closing
-    candidate = candidate
-      .replace(/,\s*}/g, '}')
-      .replace(/,\s*]/g, ']');
+    candidate = candidate.replace(/,\s*}/g, '}').replace(/,\s*]/g, ']');
 
     try {
       const result = JSON.parse(candidate);
-      console.warn('Recovered JSON from truncated response');
+      console.warn(`Recovered JSON from truncated response (closed ${openBraces} braces, ${openBrackets} brackets)`);
       return result;
     } catch (e) {
-      console.error('Recovery failed:', (e as Error).message);
-      console.error('First 500 chars:', candidate.substring(0, 500));
+      // Last resort: try to find and close at a known good boundary
+      // Look backwards for last complete "}" that could be an object end
+      console.error('Recovery attempt 1 failed:', (e as Error).message);
+      
+      // Try more aggressive trimming — cut back to last complete object in an array
+      let lastTry = cleaned.substring(objStart);
+      // Find last complete } before any truncation
+      let braceCount = 0;
+      let lastBalancedPos = -1;
+      for (let i = 0; i < lastTry.length; i++) {
+        if (lastTry[i] === '{') braceCount++;
+        if (lastTry[i] === '}') { braceCount--; if (braceCount === 0) lastBalancedPos = i; }
+      }
+      
+      if (lastBalancedPos > 0) {
+        const trimmed = lastTry.substring(0, lastBalancedPos + 1);
+        try {
+          const result = JSON.parse(trimmed);
+          console.warn('Recovered JSON by finding last balanced brace');
+          return result;
+        } catch (_) { /* give up */ }
+      }
+      
+      console.error('All recovery attempts failed. First 500 chars:', candidate.substring(0, 500));
     }
   }
 
@@ -383,10 +403,28 @@ CRITICAL RULES:
 - If total > ₹${budget}: set budget_status to "exceeded" and fill budget_optimization with changes you'd make
 - Return ONLY the JSON object, nothing else`;
 
-  const raw = await callGemini(system, prompt);
-  console.log(`[Plan] Raw response length: ${raw.length} chars`);
-
-  const plan = parseJSON(raw);
+  let plan: any;
+  let lastError: Error | null = null;
+  
+  for (let attempt = 0; attempt < 2; attempt++) {
+    try {
+      const raw = await callGemini(system, prompt);
+      console.log(`[Plan] Attempt ${attempt + 1}: Raw response length: ${raw.length} chars`);
+      plan = parseJSON(raw);
+      lastError = null;
+      break;
+    } catch (e) {
+      lastError = e instanceof Error ? e : new Error(String(e));
+      console.error(`[Plan] Attempt ${attempt + 1} failed:`, lastError.message);
+      if (attempt === 0) {
+        console.log('[Plan] Retrying...');
+      }
+    }
+  }
+  
+  if (lastError || !plan) {
+    throw lastError || new Error('Failed to generate plan');
+  }
 
   // Validate essential fields
   if (!plan.daily_plan || !Array.isArray(plan.daily_plan) || plan.daily_plan.length === 0) {
