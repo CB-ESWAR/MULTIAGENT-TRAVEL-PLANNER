@@ -130,8 +130,9 @@ async function callGemini(systemPrompt: string, userPrompt: string): Promise<str
         { role: 'system', content: systemPrompt },
         { role: 'user', content: userPrompt },
       ],
-      temperature: 0.3,
+      temperature: 0.2,
       max_tokens: 16000,
+      response_format: { type: 'json_object' },
     }),
   });
 
