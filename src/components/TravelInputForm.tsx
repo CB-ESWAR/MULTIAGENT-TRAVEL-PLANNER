@@ -56,6 +56,7 @@ export function TravelInputForm({ onSubmit, isLoading }: TravelInputFormProps) {
 
     const input: TravelInput = {
       destination,
+      originCity: originCity || 'Delhi, India',
       startDate,
       endDate,
       budget: parseInt(budget),
