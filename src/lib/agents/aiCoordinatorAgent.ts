@@ -56,7 +56,7 @@ export class AICoordinatorAgent extends BaseAgent {
         currency: input.currency,
         travelers: input.travelers,
         preferences: input.preferences,
-        originCity: 'Delhi',
+        originCity: input.originCity || 'Delhi',
       },
     });
 

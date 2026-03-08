@@ -8,7 +8,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
-import { CalendarIcon, MapPin, Users, Wallet, Plane } from 'lucide-react';
+import { CalendarIcon, MapPin, Users, Wallet, Plane, Navigation } from 'lucide-react';
 
 interface TravelInputFormProps {
   onSubmit: (input: TravelInput) => void;
@@ -37,6 +37,7 @@ const activityOptions = [
 
 export function TravelInputForm({ onSubmit, isLoading }: TravelInputFormProps) {
   const [destination, setDestination] = useState('');
+  const [originCity, setOriginCity] = useState('Delhi, India');
   const [startDate, setStartDate] = useState<Date | undefined>();
   const [endDate, setEndDate] = useState<Date | undefined>();
   const [budget, setBudget] = useState('25000');
@@ -55,6 +56,7 @@ export function TravelInputForm({ onSubmit, isLoading }: TravelInputFormProps) {
 
     const input: TravelInput = {
       destination,
+      originCity: originCity || 'Delhi, India',
       startDate,
       endDate,
       budget: parseInt(budget),
@@ -81,36 +83,52 @@ export function TravelInputForm({ onSubmit, isLoading }: TravelInputFormProps) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      {/* Destination */}
-      <div className="space-y-2">
-        <Label htmlFor="destination" className="flex items-center gap-2">
-          <MapPin className="w-4 h-4 text-primary" />
-          Destination
-        </Label>
-        <Input
-          id="destination"
-          placeholder="Where do you want to go?"
-          value={destination}
-          onChange={(e) => setDestination(e.target.value)}
-          className="text-lg"
-        />
-        <div className="flex flex-wrap gap-2 mt-2">
-          {popularDestinations.map((dest) => (
-            <button
-              key={dest}
-              type="button"
-              onClick={() => setDestination(dest)}
-              className={cn(
-                'text-xs px-3 py-1.5 rounded-full border transition-colors',
-                destination === dest
-                  ? 'bg-primary text-primary-foreground border-primary'
-                  : 'bg-secondary hover:bg-secondary/80 border-transparent'
-              )}
-            >
-              {dest}
-            </button>
-          ))}
+      {/* Origin & Destination */}
+      <div className="grid grid-cols-2 gap-4">
+        <div className="space-y-2">
+          <Label htmlFor="originCity" className="flex items-center gap-2">
+            <Navigation className="w-4 h-4 text-primary" />
+            Travelling From
+          </Label>
+          <Input
+            id="originCity"
+            placeholder="Your city (e.g. Delhi, Mumbai)"
+            value={originCity}
+            onChange={(e) => setOriginCity(e.target.value)}
+            className="text-lg"
+          />
         </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="destination" className="flex items-center gap-2">
+            <MapPin className="w-4 h-4 text-primary" />
+            Destination
+          </Label>
+          <Input
+            id="destination"
+            placeholder="Where do you want to go?"
+            value={destination}
+            onChange={(e) => setDestination(e.target.value)}
+            className="text-lg"
+          />
+        </div>
+      </div>
+      <div className="flex flex-wrap gap-2">
+        {popularDestinations.map((dest) => (
+          <button
+            key={dest}
+            type="button"
+            onClick={() => setDestination(dest)}
+            className={cn(
+              'text-xs px-3 py-1.5 rounded-full border transition-colors',
+              destination === dest
+                ? 'bg-primary text-primary-foreground border-primary'
+                : 'bg-secondary hover:bg-secondary/80 border-transparent'
+            )}
+          >
+            {dest}
+          </button>
+        ))}
       </div>
 
       {/* Dates */}

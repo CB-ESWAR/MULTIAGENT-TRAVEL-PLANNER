@@ -29,6 +29,7 @@ export interface Agent {
 
 export interface TravelInput {
   destination: string;
+  originCity: string;
   startDate: Date | null;
   endDate: Date | null;
   budget: number;
