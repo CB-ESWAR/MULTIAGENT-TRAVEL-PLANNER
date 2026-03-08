@@ -181,15 +181,28 @@ function parseJSON(content: string): any {
   cleaned = sanitizeJsonString(cleaned);
 
   // Try direct parse first
-  try { return JSON.parse(cleaned); } catch (_) { /* continue */ }
+  try { return JSON.parse(cleaned); } catch (e) {
+    // Log the exact failure location
+    const msg = (e as Error).message;
+    const posMatch = msg.match(/position (\d+)/);
+    if (posMatch) {
+      const pos = parseInt(posMatch[1]);
+      const context = cleaned.substring(Math.max(0, pos - 80), pos + 80);
+      const charCodes = [];
+      for (let i = Math.max(0, pos - 5); i < Math.min(cleaned.length, pos + 5); i++) {
+        charCodes.push(`${i}:${cleaned.charCodeAt(i)}('${cleaned[i]}')`);
+      }
+      console.error(`[JSON] Parse fail at pos ${pos}. Context: ...${context}...`);
+      console.error(`[JSON] Char codes around failure: ${charCodes.join(', ')}`);
+    }
+  }
 
   // Extract JSON object between first { and last }
   const objStart = cleaned.indexOf('{');
   const objEnd = cleaned.lastIndexOf('}');
   if (objStart !== -1 && objEnd > objStart) {
     let slice = cleaned.substring(objStart, objEnd + 1);
-    try { return JSON.parse(slice); } catch (_) { /* continue */ }
-
+    
     // Fix trailing commas
     slice = slice.replace(/,\s*}/g, '}').replace(/,\s*]/g, ']');
     try { return JSON.parse(slice); } catch (_) { /* continue */ }
