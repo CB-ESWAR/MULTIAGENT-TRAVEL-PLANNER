@@ -179,4 +179,8 @@
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
   }
+
+  .dark .glass {
+    background: rgba(30, 30, 40, 0.85);
+  }
 }
