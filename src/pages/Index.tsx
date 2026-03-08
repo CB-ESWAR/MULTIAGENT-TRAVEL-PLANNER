@@ -3,11 +3,13 @@ import { TravelInputForm } from '@/components/TravelInputForm';
 import { AgentVisualization } from '@/components/AgentVisualization';
 import { TravelPlanDisplay } from '@/components/TravelPlanDisplay';
 import { AILoadingScreen } from '@/components/AILoadingScreen';
-import { Compass, Sparkles, Bot, Zap, Brain } from 'lucide-react';
+import { Compass, Sparkles, Bot, Zap, Brain, Moon, Sun } from 'lucide-react';
 import heroAgents from '@/assets/hero-agents.jpg';
 import { Agent, AgentType } from '@/types/agent';
+import { useTheme } from '@/hooks/useTheme';
 
 const Index = () => {
+  const { theme, toggleTheme } = useTheme();
   const {
     agentStatuses, 
     messages, 
@@ -51,6 +53,13 @@ const Index = () => {
                 <span className="w-2 h-2 bg-success rounded-full animate-pulse" />
                 Agents Online
               </span>
+              <button
+                onClick={toggleTheme}
+                className="w-9 h-9 rounded-lg border bg-card flex items-center justify-center hover:bg-muted transition-colors"
+                aria-label="Toggle theme"
+              >
+                {theme === 'light' ? <Moon className="w-4 h-4 text-foreground" /> : <Sun className="w-4 h-4 text-foreground" />}
+              </button>
             </div>
           </div>
         </div>
