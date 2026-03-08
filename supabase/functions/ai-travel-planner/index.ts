@@ -130,8 +130,9 @@ async function callGemini(systemPrompt: string, userPrompt: string): Promise<str
         { role: 'system', content: systemPrompt },
         { role: 'user', content: userPrompt },
       ],
-      temperature: 0.3,
+      temperature: 0.2,
       max_tokens: 16000,
+      response_format: { type: 'json_object' },
     }),
   });
 
@@ -147,6 +148,27 @@ async function callGemini(systemPrompt: string, userPrompt: string): Promise<str
   return j.choices?.[0]?.message?.content || '';
 }
 
+// Sanitize control characters and fix common JSON issues inside string values
+function sanitizeJsonString(str: string): string {
+  // Remove control characters except \n \r \t
+  let s = str.replace(/[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]/g, '');
+  // Fix unescaped newlines inside JSON string values by processing character by character
+  let result = '';
+  let inString = false;
+  let escaped = false;
+  for (let i = 0; i < s.length; i++) {
+    const ch = s[i];
+    if (escaped) { result += ch; escaped = false; continue; }
+    if (ch === '\\') { result += ch; escaped = true; continue; }
+    if (ch === '"') { inString = !inString; result += ch; continue; }
+    if (inString && ch === '\n') { result += '\\n'; continue; }
+    if (inString && ch === '\r') { result += '\\r'; continue; }
+    if (inString && ch === '\t') { result += '\\t'; continue; }
+    result += ch;
+  }
+  return result;
+}
+
 // Robust JSON parsing with truncation recovery
 function parseJSON(content: string): any {
   // Strip markdown code blocks
@@ -154,6 +176,9 @@ function parseJSON(content: string): any {
     .replace(/```json\s*/gi, '')
     .replace(/```\s*/g, '')
     .trim();
+
+  // Sanitize
+  cleaned = sanitizeJsonString(cleaned);
 
   // Try direct parse first
   try { return JSON.parse(cleaned); } catch (_) { /* continue */ }
