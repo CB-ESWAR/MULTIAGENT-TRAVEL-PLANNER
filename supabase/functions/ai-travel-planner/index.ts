@@ -459,8 +459,10 @@ CRITICAL RULES:
 - EVERY place name must be a REAL, specific place (never "Beach Visit" or "City Tour")
 - EVERY restaurant must be a real or realistic restaurant name for ${destination}
 - ALL costs in INR
-- daily_cost = sum of activity costs + lunch + dinner for ${travelers} person(s)
-- budget_breakdown.total MUST equal the sum of all sub-categories
+- ALL numeric values MUST be pre-computed numbers (e.g. 4800), NEVER math expressions (e.g. 4 * 1200). No formulas, no calculations, no multiplication in the JSON.
+- daily_cost = sum of activity costs + lunch + dinner for ${travelers} person(s) — write the FINAL NUMBER
+- budget_breakdown.total MUST equal the sum of all sub-categories — write the FINAL NUMBER
+- total_cost for accommodation must be a single number, not a formula
 - If total > ₹${budget}: set budget_status to "exceeded" and fill budget_optimization with changes you'd make
 - Return ONLY the JSON object, nothing else`;
 
