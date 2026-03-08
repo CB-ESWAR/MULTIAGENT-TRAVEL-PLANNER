@@ -372,7 +372,7 @@ Return this EXACT JSON structure:
     "type": "hotel|resort|guesthouse",
     "rating": 4.2,
     "price_per_night": 2500,
-    "total_cost": ${(duration - 1)} * price,
+    "total_cost": 7500,
     "address": "Area, ${destination}",
     "amenities": ["WiFi", "AC", "Pool"],
     "alternatives": [
