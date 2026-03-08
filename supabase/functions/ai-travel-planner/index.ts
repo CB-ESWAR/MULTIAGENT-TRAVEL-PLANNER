@@ -149,54 +149,73 @@ async function callGemini(systemPrompt: string, userPrompt: string): Promise<str
 
 // Robust JSON parsing with truncation recovery
 function parseJSON(content: string): any {
-  // Try markdown code block
-  const blockMatch = content.match(/```(?:json)?\s*\n?([\s\S]*?)\n?\s*```/);
-  if (blockMatch) {
-    try { return JSON.parse(blockMatch[1].trim()); } catch (_) { /* try recovery */ }
-    return parseWithRecovery(blockMatch[1].trim());
+  // Strip markdown code blocks
+  let cleaned = content
+    .replace(/```json\s*/gi, '')
+    .replace(/```\s*/g, '')
+    .trim();
+
+  // Try direct parse first
+  try { return JSON.parse(cleaned); } catch (_) { /* continue */ }
+
+  // Extract JSON object
+  const objStart = cleaned.indexOf('{');
+  const objEnd = cleaned.lastIndexOf('}');
+  if (objStart !== -1 && objEnd > objStart) {
+    const slice = cleaned.substring(objStart, objEnd + 1);
+    try { return JSON.parse(slice); } catch (_) { /* continue */ }
+
+    // Fix trailing commas
+    const fixed = slice
+      .replace(/,\s*}/g, '}')
+      .replace(/,\s*]/g, ']');
+    try { return JSON.parse(fixed); } catch (_) { /* continue */ }
   }
 
-  // Try raw JSON object
-  const objMatch = content.match(/\{[\s\S]*\}/);
-  if (objMatch) {
-    try { return JSON.parse(objMatch[0]); } catch (_) { /* try recovery */ }
-  }
+  // Truncation recovery: find the last complete object in a truncated response
+  if (objStart !== -1) {
+    let candidate = cleaned.substring(objStart);
+    
+    // Try progressively closing unclosed brackets
+    const openBraces = (candidate.match(/{/g) || []).length;
+    const closeBraces = (candidate.match(/}/g) || []).length;
+    const openBrackets = (candidate.match(/\[/g) || []).length;
+    const closeBrackets = (candidate.match(/]/g) || []).length;
 
-  // Try raw JSON array
-  const arrMatch = content.match(/\[[\s\S]*\]/);
-  if (arrMatch) {
-    try { return JSON.parse(arrMatch[0]); } catch (_) { /* try recovery */ }
-    return parseWithRecovery(arrMatch[0]);
-  }
-
-  // Last resort
-  try { return JSON.parse(content.trim()); } catch (_) {}
-  return parseWithRecovery(content.trim());
-}
-
-function parseWithRecovery(content: string): any {
-  try {
-    return JSON.parse(content);
-  } catch {
-    // Attempt to repair truncated JSON array
-    const lastBrace = content.lastIndexOf("}");
-    if (lastBrace > 0) {
-      // Try closing as array
-      const repaired = content.substring(0, lastBrace + 1) + "]";
-      try {
-        const items = JSON.parse(repaired);
-        console.warn(`Recovered ${Array.isArray(items) ? items.length : 'object'} from truncated response`);
-        return items;
-      } catch { /* try object repair */ }
-
-      // Try closing as object
-      const repaired2 = content.substring(0, lastBrace + 1) + "}";
-      try {
-        return JSON.parse(repaired2);
-      } catch { /* give up */ }
+    // Trim to last complete property value
+    const lastCompleteComma = candidate.lastIndexOf(',');
+    const lastCompleteBrace = candidate.lastIndexOf('}');
+    const cutPoint = Math.max(lastCompleteComma, lastCompleteBrace);
+    
+    if (cutPoint > 0) {
+      candidate = candidate.substring(0, cutPoint + 1);
+      // Remove trailing comma if present
+      candidate = candidate.replace(/,\s*$/, '');
     }
-    throw new Error("Cannot parse AI response as JSON");
+
+    // Close unclosed brackets/braces
+    const remainingOpenBrackets = (candidate.match(/\[/g) || []).length - (candidate.match(/]/g) || []).length;
+    const remainingOpenBraces = (candidate.match(/{/g) || []).length - (candidate.match(/}/g) || []).length;
+    
+    for (let i = 0; i < remainingOpenBrackets; i++) candidate += ']';
+    for (let i = 0; i < remainingOpenBraces; i++) candidate += '}';
+
+    // Fix trailing commas before closing
+    candidate = candidate
+      .replace(/,\s*}/g, '}')
+      .replace(/,\s*]/g, ']');
+
+    try {
+      const result = JSON.parse(candidate);
+      console.warn('Recovered JSON from truncated response');
+      return result;
+    } catch (e) {
+      console.error('Recovery failed:', (e as Error).message);
+      console.error('First 500 chars:', candidate.substring(0, 500));
+    }
   }
+
+  throw new Error('Cannot parse AI response as JSON');
 }
 
 // ============================================================================
