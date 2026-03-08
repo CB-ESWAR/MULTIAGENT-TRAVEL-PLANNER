@@ -125,12 +125,13 @@ export function AILoadingScreen({ isVisible }: AILoadingScreenProps) {
               return (
                 <motion.span
                   key={i}
-                  className="absolute opacity-[0.15] select-none"
+                  className="absolute select-none"
                   style={{ left: `${p.left}%`, top: `${p.top}%`, fontSize: p.size }}
                   animate={{
                     x: [0, p.driftX1, p.driftX2, p.driftX3, 0],
                     y: [0, p.driftY1, p.driftY2, p.driftY3, 0],
-                    rotate: [0, p.rotate1, -p.rotate2, p.rotate1 * 0.5, 0],
+                    rotate: [0, p.spin1, p.spin2, p.spin3, 0],
+                    opacity: [0.18, 0.3, 0.18, 0.28, 0.18],
                   }}
                   transition={{
                     duration: p.duration,
