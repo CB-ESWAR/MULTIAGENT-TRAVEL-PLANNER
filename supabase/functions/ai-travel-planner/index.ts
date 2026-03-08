@@ -148,10 +148,33 @@ async function callGemini(systemPrompt: string, userPrompt: string): Promise<str
   return j.choices?.[0]?.message?.content || '';
 }
 
+// Evaluate simple math expressions in JSON values (e.g. "daily_cost": 4 * 100 + 200)
+function evaluateMathInJson(str: string): string {
+  // Match a colon followed by a math expression (not inside quotes)
+  // This replaces values like: 4 * (100 + 20) + 4 * 400 with the computed number
+  return str.replace(
+    /:\s*([\d\s\+\-\*\/\(\)\.]+(?:[\+\-\*\/][\d\s\+\-\*\/\(\)\.]+)+)\s*([,\}\]])/g,
+    (match, expr, ending) => {
+      try {
+        // Only evaluate if it contains math operators and looks like a math expression
+        if (/[+\-*/]/.test(expr) && /\d/.test(expr)) {
+          const result = Function(`"use strict"; return (${expr.trim()})`)();
+          if (typeof result === 'number' && isFinite(result)) {
+            return `: ${result}${ending}`;
+          }
+        }
+      } catch (_) { /* leave as-is if eval fails */ }
+      return match;
+    }
+  );
+}
+
 // Sanitize control characters and fix common JSON issues inside string values
 function sanitizeJsonString(str: string): string {
+  // First evaluate any math expressions
+  let s = evaluateMathInJson(str);
   // Remove control characters except \n \r \t
-  let s = str.replace(/[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]/g, '');
+  s = s.replace(/[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]/g, '');
   // Fix unescaped newlines inside JSON string values by processing character by character
   let result = '';
   let inString = false;
@@ -349,7 +372,7 @@ Return this EXACT JSON structure:
     "type": "hotel|resort|guesthouse",
     "rating": 4.2,
     "price_per_night": 2500,
-    "total_cost": ${(duration - 1)} * price,
+    "total_cost": 7500,
     "address": "Area, ${destination}",
     "amenities": ["WiFi", "AC", "Pool"],
     "alternatives": [
@@ -436,8 +459,10 @@ CRITICAL RULES:
 - EVERY place name must be a REAL, specific place (never "Beach Visit" or "City Tour")
 - EVERY restaurant must be a real or realistic restaurant name for ${destination}
 - ALL costs in INR
-- daily_cost = sum of activity costs + lunch + dinner for ${travelers} person(s)
-- budget_breakdown.total MUST equal the sum of all sub-categories
+- ALL numeric values MUST be pre-computed numbers (e.g. 4800), NEVER math expressions (e.g. 4 * 1200). No formulas, no calculations, no multiplication in the JSON.
+- daily_cost = sum of activity costs + lunch + dinner for ${travelers} person(s) — write the FINAL NUMBER
+- budget_breakdown.total MUST equal the sum of all sub-categories — write the FINAL NUMBER
+- total_cost for accommodation must be a single number, not a formula
 - If total > ₹${budget}: set budget_status to "exceeded" and fill budget_optimization with changes you'd make
 - Return ONLY the JSON object, nothing else`;
 
