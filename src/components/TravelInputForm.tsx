@@ -37,6 +37,7 @@ const activityOptions = [
 
 export function TravelInputForm({ onSubmit, isLoading }: TravelInputFormProps) {
   const [destination, setDestination] = useState('');
+  const [originCity, setOriginCity] = useState('Delhi, India');
   const [startDate, setStartDate] = useState<Date | undefined>();
   const [endDate, setEndDate] = useState<Date | undefined>();
   const [budget, setBudget] = useState('25000');
