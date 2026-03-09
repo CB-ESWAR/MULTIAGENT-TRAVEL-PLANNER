@@ -90,8 +90,8 @@ const Index = () => {
               Your AI Travel Planning
               <span className="bg-clip-text text-transparent" style={{ backgroundImage: 'var(--gradient-hero)', WebkitBackgroundClip: 'text' }}> Dream Team</span>
             </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8 animate-fade-in" style={{ animationDelay: '100ms' }}>
-              Watch Gemini-powered agents collaborate in real-time with Booking.com & Airbnb-style recommendations. 
+            <p className="text-sm sm:text-lg text-muted-foreground max-w-2xl mx-auto mb-6 sm:mb-8 animate-fade-in" style={{ animationDelay: '100ms' }}>
+              Watch Gemini-powered agents collaborate in real-time. 
               Weather-aware, budget-optimized, and fully personalized.
             </p>
             
