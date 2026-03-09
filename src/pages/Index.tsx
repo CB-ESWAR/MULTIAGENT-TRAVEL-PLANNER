@@ -102,15 +102,15 @@ const Index = () => {
                 <h3 className="font-semibold text-xs sm:text-sm">7 Agents</h3>
                 <p className="text-xs text-muted-foreground mt-1">Each with unique expertise</p>
               </div>
-              <div className="bg-card/80 backdrop-blur rounded-xl p-4 border animate-fade-in" style={{ animationDelay: '300ms' }}>
-                <Zap className="w-8 h-8 text-warning mx-auto mb-2" />
-                <h3 className="font-semibold text-sm">Real-time Data</h3>
-                <p className="text-xs text-muted-foreground mt-1">Live weather & pricing</p>
+              <div className="bg-card/80 backdrop-blur rounded-xl p-3 sm:p-4 border animate-fade-in" style={{ animationDelay: '300ms' }}>
+                <Zap className="w-6 h-6 sm:w-8 sm:h-8 text-warning mx-auto mb-1 sm:mb-2" />
+                <h3 className="font-semibold text-xs sm:text-sm">Real-time</h3>
+                <p className="text-xs text-muted-foreground mt-0.5 sm:mt-1 hidden sm:block">Live weather & pricing</p>
               </div>
-              <div className="bg-card/80 backdrop-blur rounded-xl p-4 border animate-fade-in" style={{ animationDelay: '400ms' }}>
-                <Sparkles className="w-8 h-8 text-accent mx-auto mb-2" />
-                <h3 className="font-semibold text-sm">Smart Optimization</h3>
-                <p className="text-xs text-muted-foreground mt-1">Budget & preference aware</p>
+              <div className="bg-card/80 backdrop-blur rounded-xl p-3 sm:p-4 border animate-fade-in" style={{ animationDelay: '400ms' }}>
+                <Sparkles className="w-6 h-6 sm:w-8 sm:h-8 text-accent mx-auto mb-1 sm:mb-2" />
+                <h3 className="font-semibold text-xs sm:text-sm">Smart AI</h3>
+                <p className="text-xs text-muted-foreground mt-0.5 sm:mt-1 hidden sm:block">Budget & preference aware</p>
               </div>
             </div>
           </div>
