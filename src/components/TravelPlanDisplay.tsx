@@ -23,6 +23,8 @@ import {
   Car
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { generateTravelPDF } from '@/lib/generateTravelPDF';
+import { Download } from 'lucide-react';
 
 interface TravelPlanDisplayProps {
   plan: TravelPlan;
