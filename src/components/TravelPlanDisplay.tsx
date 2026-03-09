@@ -73,12 +73,12 @@ export function TravelPlanDisplay({ plan, onReset }: TravelPlanDisplayProps) {
 
         {/* Status Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mt-4 sm:mt-6">
-          <div className="bg-card rounded-xl p-4 border">
-            <div className="flex items-center gap-2 mb-2">
+          <div className="bg-card rounded-xl p-3 sm:p-4 border">
+            <div className="flex items-center gap-2 mb-1 sm:mb-2">
               <Wallet className="w-4 h-4 text-muted-foreground" />
-              <span className="text-sm text-muted-foreground">Total Cost</span>
+              <span className="text-xs sm:text-sm text-muted-foreground">Total Cost</span>
             </div>
-            <p className="text-2xl font-display font-bold">
+            <p className="text-lg sm:text-2xl font-display font-bold">
               ₹{plan.totalCost.toLocaleString()}
             </p>
             <p className="text-sm text-muted-foreground">
