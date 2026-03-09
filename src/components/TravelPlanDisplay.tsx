@@ -352,22 +352,22 @@ function MealCard({ meal, type }: { meal: MealRecommendation; type: 'lunch' | 'd
 function DayCard({ day }: { day: DayPlan }) {
   return (
     <div className="bg-card rounded-xl border overflow-hidden">
-      <div className="bg-gradient-to-r from-primary/10 to-accent/10 px-5 py-3 flex items-center justify-between">
+      <div className="bg-gradient-to-r from-primary/10 to-accent/10 px-3 sm:px-5 py-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
         <div className="flex items-center gap-3">
-          <span className="bg-primary text-primary-foreground w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm">
+          <span className="bg-primary text-primary-foreground w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm shrink-0">
             {day.day}
           </span>
           <div>
-            <p className="font-semibold">Day {day.day}{day.theme ? ` — ${day.theme}` : ''}</p>
+            <p className="font-semibold text-sm sm:text-base">Day {day.day}{day.theme ? ` — ${day.theme}` : ''}</p>
             <p className="text-xs text-muted-foreground">{day.date}</p>
           </div>
         </div>
         
-        <div className="flex items-center gap-3">
-          <div className="flex items-center gap-1.5 text-sm">
+        <div className="flex items-center gap-2 sm:gap-3 ml-11 sm:ml-0">
+          <div className="flex items-center gap-1.5 text-xs sm:text-sm">
             <span>{day.weather.icon}</span>
             <span>{day.weather.temperature}°C</span>
-            <span className="text-muted-foreground">• {day.weather.condition}</span>
+            <span className="text-muted-foreground hidden sm:inline">• {day.weather.condition}</span>
           </div>
           <span className={cn(
             'text-xs px-2 py-0.5 rounded-full',
@@ -375,7 +375,7 @@ function DayCard({ day }: { day: DayPlan }) {
               ? 'bg-success/20 text-success' 
               : 'bg-warning/20 text-warning'
           )}>
-            {day.weather.suitable ? 'Good' : 'Indoor preferred'}
+            {day.weather.suitable ? 'Good' : 'Indoor'}
           </span>
         </div>
       </div>
