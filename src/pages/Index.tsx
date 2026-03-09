@@ -67,7 +67,7 @@ const Index = () => {
 
       {/* Hero Section - Only show when no plan */}
       {!travelPlan && (
-        <section className="relative py-16 overflow-hidden">
+        <section className="relative py-8 sm:py-16 overflow-hidden">
           {/* Background Image */}
           <div 
             className="absolute inset-0 bg-cover bg-center opacity-20"
@@ -75,6 +75,12 @@ const Index = () => {
           />
           <div className="absolute inset-0 bg-gradient-to-b from-background via-background/80 to-background" />
           
+          <div className="container mx-auto px-4 text-center relative z-10">
+            <div className="inline-flex items-center gap-2 bg-accent/10 text-accent px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium mb-4 sm:mb-6 animate-fade-in">
+              <Brain className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+              Powered by Gemini AI + 6 Agents
+            </div>
+            <h2 className="font-display text-2xl sm:text-4xl md:text-5xl font-bold text-foreground mb-3 sm:mb-4 animate-fade-in">
           <div className="container mx-auto px-4 text-center relative z-10">
             <div className="inline-flex items-center gap-2 bg-accent/10 text-accent px-4 py-2 rounded-full text-sm font-medium mb-6 animate-fade-in">
               <Brain className="w-4 h-4" />
