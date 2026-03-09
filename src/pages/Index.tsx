@@ -96,10 +96,10 @@ const Index = () => {
             </p>
             
             {/* Features */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-3xl mx-auto">
-              <div className="bg-card/80 backdrop-blur rounded-xl p-4 border animate-fade-in" style={{ animationDelay: '200ms' }}>
-                <Bot className="w-8 h-8 text-primary mx-auto mb-2" />
-                <h3 className="font-semibold text-sm">7 Specialized Agents</h3>
+            <div className="grid grid-cols-3 gap-2 sm:gap-4 max-w-3xl mx-auto">
+              <div className="bg-card/80 backdrop-blur rounded-xl p-3 sm:p-4 border animate-fade-in" style={{ animationDelay: '200ms' }}>
+                <Bot className="w-6 h-6 sm:w-8 sm:h-8 text-primary mx-auto mb-1 sm:mb-2" />
+                <h3 className="font-semibold text-xs sm:text-sm">7 Agents</h3>
                 <p className="text-xs text-muted-foreground mt-1">Each with unique expertise</p>
               </div>
               <div className="bg-card/80 backdrop-blur rounded-xl p-4 border animate-fade-in" style={{ animationDelay: '300ms' }}>
