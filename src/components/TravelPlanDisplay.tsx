@@ -308,6 +308,18 @@ export function TravelPlanDisplay({ plan, onReset }: TravelPlanDisplayProps) {
         </div>
       )}
 
+      {/* Download PDF */}
+      <div className="flex justify-center">
+        <Button
+          size="lg"
+          onClick={() => generateTravelPDF(plan)}
+          className="gap-2"
+        >
+          <Download className="w-5 h-5" />
+          Download Trip Plan as PDF
+        </Button>
+      </div>
+
       {/* Summary Footer */}
       <div className="bg-muted rounded-xl p-4 text-center">
         <p className="text-sm text-muted-foreground">
