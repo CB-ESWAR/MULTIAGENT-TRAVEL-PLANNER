@@ -387,7 +387,7 @@ function DayCard({ day }: { day: DayPlan }) {
         </div>
       )}
       
-      <div className="p-5">
+      <div className="p-3 sm:p-5">
         <div className="space-y-3">
           {day.activities.map((activity, index) => (
             <div key={activity.id}>

@@ -81,12 +81,6 @@ const Index = () => {
               Powered by Gemini AI + 6 Agents
             </div>
             <h2 className="font-display text-2xl sm:text-4xl md:text-5xl font-bold text-foreground mb-3 sm:mb-4 animate-fade-in">
-          <div className="container mx-auto px-4 text-center relative z-10">
-            <div className="inline-flex items-center gap-2 bg-accent/10 text-accent px-4 py-2 rounded-full text-sm font-medium mb-6 animate-fade-in">
-              <Brain className="w-4 h-4" />
-              Powered by Gemini AI + 6 Autonomous Agents
-            </div>
-            <h2 className="font-display text-4xl md:text-5xl font-bold text-foreground mb-4 animate-fade-in">
               Your AI Travel Planning
               <span className="bg-clip-text text-transparent" style={{ backgroundImage: 'var(--gradient-hero)', WebkitBackgroundClip: 'text' }}> Dream Team</span>
             </h2>
@@ -100,17 +94,17 @@ const Index = () => {
               <div className="bg-card/80 backdrop-blur rounded-xl p-3 sm:p-4 border animate-fade-in" style={{ animationDelay: '200ms' }}>
                 <Bot className="w-6 h-6 sm:w-8 sm:h-8 text-primary mx-auto mb-1 sm:mb-2" />
                 <h3 className="font-semibold text-xs sm:text-sm">7 Agents</h3>
-                <p className="text-xs text-muted-foreground mt-1">Each with unique expertise</p>
+                <p className="text-xs text-muted-foreground mt-1 hidden sm:block">Each with unique expertise</p>
               </div>
               <div className="bg-card/80 backdrop-blur rounded-xl p-3 sm:p-4 border animate-fade-in" style={{ animationDelay: '300ms' }}>
                 <Zap className="w-6 h-6 sm:w-8 sm:h-8 text-warning mx-auto mb-1 sm:mb-2" />
                 <h3 className="font-semibold text-xs sm:text-sm">Real-time</h3>
-                <p className="text-xs text-muted-foreground mt-0.5 sm:mt-1 hidden sm:block">Live weather & pricing</p>
+                <p className="text-xs text-muted-foreground mt-1 hidden sm:block">Live weather & pricing</p>
               </div>
               <div className="bg-card/80 backdrop-blur rounded-xl p-3 sm:p-4 border animate-fade-in" style={{ animationDelay: '400ms' }}>
                 <Sparkles className="w-6 h-6 sm:w-8 sm:h-8 text-accent mx-auto mb-1 sm:mb-2" />
                 <h3 className="font-semibold text-xs sm:text-sm">Smart AI</h3>
-                <p className="text-xs text-muted-foreground mt-0.5 sm:mt-1 hidden sm:block">Budget & preference aware</p>
+                <p className="text-xs text-muted-foreground mt-1 hidden sm:block">Budget & preference aware</p>
               </div>
             </div>
           </div>
