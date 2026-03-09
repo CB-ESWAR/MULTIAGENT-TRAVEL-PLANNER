@@ -53,32 +53,32 @@ export function TravelPlanDisplay({ plan, onReset }: TravelPlanDisplayProps) {
   };
 
   return (
-    <div className="space-y-6 animate-fade-in">
+    <div className="space-y-4 sm:space-y-6 animate-fade-in">
       {/* Header Summary */}
-      <div className="bg-gradient-to-br from-primary/10 via-accent/5 to-success/10 rounded-2xl p-6 border">
-        <div className="flex items-start justify-between mb-4">
+      <div className="bg-gradient-to-br from-primary/10 via-accent/5 to-success/10 rounded-2xl p-4 sm:p-6 border">
+        <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 mb-4">
           <div>
-            <h2 className="text-2xl font-display font-bold text-foreground flex items-center gap-2">
-              <MapPin className="w-6 h-6 text-primary" />
+            <h2 className="text-xl sm:text-2xl font-display font-bold text-foreground flex items-center gap-2">
+              <MapPin className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
               {plan.destination}
             </h2>
-            <p className="text-muted-foreground mt-1">
+            <p className="text-sm text-muted-foreground mt-1">
               {plan.duration} Days • {plan.itinerary[0]?.date} to {plan.itinerary[plan.itinerary.length - 1]?.date}
             </p>
           </div>
-          <Button variant="outline" onClick={onReset}>
+          <Button variant="outline" size="sm" onClick={onReset}>
             Plan Another Trip
           </Button>
         </div>
 
         {/* Status Cards */}
-        <div className="grid grid-cols-3 gap-4 mt-6">
-          <div className="bg-card rounded-xl p-4 border">
-            <div className="flex items-center gap-2 mb-2">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mt-4 sm:mt-6">
+          <div className="bg-card rounded-xl p-3 sm:p-4 border">
+            <div className="flex items-center gap-2 mb-1 sm:mb-2">
               <Wallet className="w-4 h-4 text-muted-foreground" />
-              <span className="text-sm text-muted-foreground">Total Cost</span>
+              <span className="text-xs sm:text-sm text-muted-foreground">Total Cost</span>
             </div>
-            <p className="text-2xl font-display font-bold">
+            <p className="text-lg sm:text-2xl font-display font-bold">
               ₹{plan.totalCost.toLocaleString()}
             </p>
             <p className="text-sm text-muted-foreground">
@@ -86,13 +86,13 @@ export function TravelPlanDisplay({ plan, onReset }: TravelPlanDisplayProps) {
             </p>
           </div>
 
-          <div className="bg-card rounded-xl p-4 border">
-            <div className="flex items-center gap-2 mb-2">
+          <div className="bg-card rounded-xl p-3 sm:p-4 border">
+            <div className="flex items-center gap-2 mb-1 sm:mb-2">
               {getBudgetIcon()}
-              <span className="text-sm text-muted-foreground">Budget Status</span>
+              <span className="text-xs sm:text-sm text-muted-foreground">Budget Status</span>
             </div>
             <p className={cn(
-              'text-xl font-display font-bold capitalize',
+              'text-lg sm:text-xl font-display font-bold capitalize',
               plan.budgetStatus === 'approved' && 'text-success',
               plan.budgetStatus === 'warning' && 'text-warning',
               plan.budgetStatus === 'exceeded' && 'text-destructive'
@@ -109,13 +109,13 @@ export function TravelPlanDisplay({ plan, onReset }: TravelPlanDisplayProps) {
             </p>
           </div>
 
-          <div className="bg-card rounded-xl p-4 border">
-            <div className="flex items-center gap-2 mb-2">
+          <div className="bg-card rounded-xl p-3 sm:p-4 border">
+            <div className="flex items-center gap-2 mb-1 sm:mb-2">
               <Sun className="w-4 h-4 text-warning" />
-              <span className="text-sm text-muted-foreground">Weather</span>
+              <span className="text-xs sm:text-sm text-muted-foreground">Weather</span>
             </div>
             <p className={cn(
-              'text-xl font-display font-bold capitalize',
+              'text-lg sm:text-xl font-display font-bold capitalize',
               plan.weatherStatus === 'suitable' && 'text-success',
               plan.weatherStatus === 'partially-suitable' && 'text-warning',
               plan.weatherStatus === 'unsuitable' && 'text-destructive'
@@ -179,7 +179,7 @@ export function TravelPlanDisplay({ plan, onReset }: TravelPlanDisplayProps) {
       )}
 
       {/* Hotel & Transport */}
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {plan.hotel && (
           <div className="bg-card rounded-xl p-5 border">
             <div className="flex items-center gap-2 mb-3">
@@ -352,22 +352,22 @@ function MealCard({ meal, type }: { meal: MealRecommendation; type: 'lunch' | 'd
 function DayCard({ day }: { day: DayPlan }) {
   return (
     <div className="bg-card rounded-xl border overflow-hidden">
-      <div className="bg-gradient-to-r from-primary/10 to-accent/10 px-5 py-3 flex items-center justify-between">
+      <div className="bg-gradient-to-r from-primary/10 to-accent/10 px-3 sm:px-5 py-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
         <div className="flex items-center gap-3">
-          <span className="bg-primary text-primary-foreground w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm">
+          <span className="bg-primary text-primary-foreground w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm shrink-0">
             {day.day}
           </span>
           <div>
-            <p className="font-semibold">Day {day.day}{day.theme ? ` — ${day.theme}` : ''}</p>
+            <p className="font-semibold text-sm sm:text-base">Day {day.day}{day.theme ? ` — ${day.theme}` : ''}</p>
             <p className="text-xs text-muted-foreground">{day.date}</p>
           </div>
         </div>
         
-        <div className="flex items-center gap-3">
-          <div className="flex items-center gap-1.5 text-sm">
+        <div className="flex items-center gap-2 sm:gap-3 ml-11 sm:ml-0">
+          <div className="flex items-center gap-1.5 text-xs sm:text-sm">
             <span>{day.weather.icon}</span>
             <span>{day.weather.temperature}°C</span>
-            <span className="text-muted-foreground">• {day.weather.condition}</span>
+            <span className="text-muted-foreground hidden sm:inline">• {day.weather.condition}</span>
           </div>
           <span className={cn(
             'text-xs px-2 py-0.5 rounded-full',
@@ -375,7 +375,7 @@ function DayCard({ day }: { day: DayPlan }) {
               ? 'bg-success/20 text-success' 
               : 'bg-warning/20 text-warning'
           )}>
-            {day.weather.suitable ? 'Good' : 'Indoor preferred'}
+            {day.weather.suitable ? 'Good' : 'Indoor'}
           </span>
         </div>
       </div>
@@ -387,7 +387,7 @@ function DayCard({ day }: { day: DayPlan }) {
         </div>
       )}
       
-      <div className="p-5">
+      <div className="p-3 sm:p-5">
         <div className="space-y-3">
           {day.activities.map((activity, index) => (
             <div key={activity.id}>

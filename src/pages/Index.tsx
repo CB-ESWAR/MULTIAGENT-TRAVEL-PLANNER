@@ -67,7 +67,7 @@ const Index = () => {
 
       {/* Hero Section - Only show when no plan */}
       {!travelPlan && (
-        <section className="relative py-16 overflow-hidden">
+        <section className="relative py-8 sm:py-16 overflow-hidden">
           {/* Background Image */}
           <div 
             className="absolute inset-0 bg-cover bg-center opacity-20"
@@ -76,35 +76,35 @@ const Index = () => {
           <div className="absolute inset-0 bg-gradient-to-b from-background via-background/80 to-background" />
           
           <div className="container mx-auto px-4 text-center relative z-10">
-            <div className="inline-flex items-center gap-2 bg-accent/10 text-accent px-4 py-2 rounded-full text-sm font-medium mb-6 animate-fade-in">
-              <Brain className="w-4 h-4" />
-              Powered by Gemini AI + 6 Autonomous Agents
+            <div className="inline-flex items-center gap-2 bg-accent/10 text-accent px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium mb-4 sm:mb-6 animate-fade-in">
+              <Brain className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+              Powered by Gemini AI + 6 Agents
             </div>
-            <h2 className="font-display text-4xl md:text-5xl font-bold text-foreground mb-4 animate-fade-in">
+            <h2 className="font-display text-2xl sm:text-4xl md:text-5xl font-bold text-foreground mb-3 sm:mb-4 animate-fade-in">
               Your AI Travel Planning
               <span className="bg-clip-text text-transparent" style={{ backgroundImage: 'var(--gradient-hero)', WebkitBackgroundClip: 'text' }}> Dream Team</span>
             </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8 animate-fade-in" style={{ animationDelay: '100ms' }}>
-              Watch Gemini-powered agents collaborate in real-time with Booking.com & Airbnb-style recommendations. 
+            <p className="text-sm sm:text-lg text-muted-foreground max-w-2xl mx-auto mb-6 sm:mb-8 animate-fade-in" style={{ animationDelay: '100ms' }}>
+              Watch Gemini-powered agents collaborate in real-time. 
               Weather-aware, budget-optimized, and fully personalized.
             </p>
             
             {/* Features */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-3xl mx-auto">
-              <div className="bg-card/80 backdrop-blur rounded-xl p-4 border animate-fade-in" style={{ animationDelay: '200ms' }}>
-                <Bot className="w-8 h-8 text-primary mx-auto mb-2" />
-                <h3 className="font-semibold text-sm">7 Specialized Agents</h3>
-                <p className="text-xs text-muted-foreground mt-1">Each with unique expertise</p>
+            <div className="grid grid-cols-3 gap-2 sm:gap-4 max-w-3xl mx-auto">
+              <div className="bg-card/80 backdrop-blur rounded-xl p-3 sm:p-4 border animate-fade-in" style={{ animationDelay: '200ms' }}>
+                <Bot className="w-6 h-6 sm:w-8 sm:h-8 text-primary mx-auto mb-1 sm:mb-2" />
+                <h3 className="font-semibold text-xs sm:text-sm">7 Agents</h3>
+                <p className="text-xs text-muted-foreground mt-1 hidden sm:block">Each with unique expertise</p>
               </div>
-              <div className="bg-card/80 backdrop-blur rounded-xl p-4 border animate-fade-in" style={{ animationDelay: '300ms' }}>
-                <Zap className="w-8 h-8 text-warning mx-auto mb-2" />
-                <h3 className="font-semibold text-sm">Real-time Data</h3>
-                <p className="text-xs text-muted-foreground mt-1">Live weather & pricing</p>
+              <div className="bg-card/80 backdrop-blur rounded-xl p-3 sm:p-4 border animate-fade-in" style={{ animationDelay: '300ms' }}>
+                <Zap className="w-6 h-6 sm:w-8 sm:h-8 text-warning mx-auto mb-1 sm:mb-2" />
+                <h3 className="font-semibold text-xs sm:text-sm">Real-time</h3>
+                <p className="text-xs text-muted-foreground mt-1 hidden sm:block">Live weather & pricing</p>
               </div>
-              <div className="bg-card/80 backdrop-blur rounded-xl p-4 border animate-fade-in" style={{ animationDelay: '400ms' }}>
-                <Sparkles className="w-8 h-8 text-accent mx-auto mb-2" />
-                <h3 className="font-semibold text-sm">Smart Optimization</h3>
-                <p className="text-xs text-muted-foreground mt-1">Budget & preference aware</p>
+              <div className="bg-card/80 backdrop-blur rounded-xl p-3 sm:p-4 border animate-fade-in" style={{ animationDelay: '400ms' }}>
+                <Sparkles className="w-6 h-6 sm:w-8 sm:h-8 text-accent mx-auto mb-1 sm:mb-2" />
+                <h3 className="font-semibold text-xs sm:text-sm">Smart AI</h3>
+                <p className="text-xs text-muted-foreground mt-1 hidden sm:block">Budget & preference aware</p>
               </div>
             </div>
           </div>
