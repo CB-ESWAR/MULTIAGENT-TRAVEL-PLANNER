@@ -1,61 +1,73 @@
-# Welcome to your my project
+# Multi-Agent Travel Planner
 
-## Project info
+An AI-powered travel planning web application that generates personalized travel itineraries using multiple intelligent agents.
 
-## How can I edit this code?
+## Live Demo
 
-There are several ways of editing your application.
+https://multi-agent-travel-planner-nine.vercel.app/
 
-**Use your preferred IDE**
+## Overview
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+The Multi-Agent Travel Planner helps users create customized travel plans based on their preferences such as destination, duration, and interests.
+The system uses multiple AI agents that collaborate to generate structured travel itineraries including recommended locations, activities, and travel schedules.
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+## Features
 
-Follow these steps:
+* AI-powered travel itinerary generation
+* Multi-agent architecture for better planning
+* Interactive and responsive user interface
+* Personalized recommendations
+* Real-time travel planning
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+## Tech Stack
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+Frontend:
 
-# Step 3: Install the necessary dependencies.
-npm i
+* React
+* TypeScript
+* Tailwind CSS
+* Vite
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+Backend / Services:
+
+* Supabase
+* AI-powered agents
+
+Deployment:
+
+* Vercel
+
+## Installation
+
+Clone the repository
+
+git clone https://github.com/CB-ESWAR/MULTIAGENT-TRAVEL-PLANNER.git
+
+Navigate to the project folder
+
+cd MULTIAGENT-TRAVEL-PLANNER
+
+Install dependencies
+
+npm install
+
+Run the development server
+
 npm run dev
-```
 
-**Edit a file directly in GitHub**
+## Project Structure
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+public/ – Static assets
+src/ – Application source code
+supabase/ – Database and backend configuration
 
-**Use GitHub Codespaces**
+## Future Improvements
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+* Integration with real-time travel APIs
+* Hotel and flight recommendation system
+* User authentication and saved itineraries
+* Budget-based travel planning
 
-## What technologies are used for this project?
+## Author
 
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+Eswar
